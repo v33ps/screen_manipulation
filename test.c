@@ -2,7 +2,7 @@
 #include <windows.h>
 
 
-void getWindow()
+HWND getWindow()
 {
 	LPSTR window_title = calloc(1024, sizeof(LPSTR));
 	// get a handle of currently active window
@@ -22,6 +22,7 @@ void getWindow()
 		exit(2);
 	}
 	printf("Window title: %s\n", window_title);
+	return hwnd;
 }
 
 
@@ -69,11 +70,25 @@ void changeScreenLocation()
 	}
 }
 
+/*
+	this function moves a window, and resizes it.
+*/
+void moveWindow(HWND hwnd, int x, int y, int width, int height)
+{
+	int ret = 0;
+	ret = MoveWindow(hwnd, x, y, width, height, 1);
+	if (ret < 1) {
+		printf("failed to move window\n");
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	printf("Switch to the window you want the title for\n");
 	Sleep(5000);
-	getWindow();
+	HWND hwnd = { 0 };
+	hwnd = getWindow();
+	moveWindow(hwnd, 30, 30, 300, 500);
 	return 0;
 }
 
